@@ -68,7 +68,7 @@ async function bootstrap() {
       'http://185.151.51.28:3001',
       'http://185.151.51.28:3000',
       'http://localhost:5007',
-      'https://easyfloors-backend.vercel.app',
+      'https://easyfloors-frontend.vercel.app/',
     ],
     credentials: true,
     allowedHeaders: ['Authorization', 'Content-Type'],
