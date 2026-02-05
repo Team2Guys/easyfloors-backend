@@ -1,0 +1,52 @@
+name: Build on PR
+
+on:
+  push:
+    branches:
+      - server
+  pull_request:
+    branches:
+      - server
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Build
+        run: npm run build
+
+      - name: Install sshpass
+        run: sudo apt-get install sshpass
+
+      - name: Deploy via SSH
+        env:
+          SSH_PASS: ${{ secrets.VPS_PASSWORD }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+        run: |
+          sshpass -p $SSH_PASS ssh -o StrictHostKeyChecking=no -p $VPS_PORT $VPS_USER@$VPS_HOST <<EOF
+          export NVM_DIR="\$HOME/.nvm"
+          [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh" # This loads nvm
+          [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion" # This loads nvm bash_completion
+          nvm use 20
+          cd /var/www/easyfloors/server
+          git pull origin server
+          
+          npm install 
+          npx prisma generate
+          npm run build
+          pm2 restart easyfloors_be --update-env
+          exit
+          EOF

@@ -1,0 +1,223 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Product {
+  id: ID!
+  name: String!
+  price: Int!
+  discountPrice: Int
+  description: String!
+  stock: Int!
+  posterImageUrl: JSON!
+  hoverImageUrl: JSON!
+  productImages: [JSON!]!
+  colors: [String!]!
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String!
+  waterproof: Boolean
+  AdditionalInformation: [JSON!]!
+  plankWidth: String
+  ResidentialWarranty: String
+  CommmericallWarranty: String
+  category: ID
+  categoryId: Int
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type SubCategory {
+  id: ID
+  name: String!
+  description: String!
+  posterImageUrl: JSON!
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String!
+  products: [Product!]
+  category: Category
+  Recall_subCat: String
+}
+
+type Category {
+  id: ID
+  name: String!
+  description: String!
+  posterImageUrl: JSON!
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String!
+  products: [Product!]
+  subcategories: [SubCategory!]
+  Recall_Cat: String
+}
+
+type FileUploading {
+  imageUrl: String!
+  public_id: String!
+}
+
+type Query {
+  products: [Product!]!
+  product(id: Int!): Product!
+  categories: [Category!]!
+  category(id: Int!): Category!
+  subCategories: [SubCategory!]!
+  subCategory(id: Int!): SubCategory!
+}
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): Product!
+  removeProduct(id: Int!): Product!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: Int!): Category!
+  createSubCategory(createSubCategoryInput: CreateSubCategoryInput!): SubCategory!
+  updateSubCategory(updateSubCategoryInput: UpdateSubCategoryInput!): SubCategory!
+  removeSubCategory(id: Int!): SubCategory!
+  createFileUploading(file: Upload!): FileUploading!
+}
+
+input CreateProductInput {
+  """products name"""
+  name: String!
+  price: Int!
+  discountPrice: Int
+  description: String!
+  stock: Int!
+  posterImageUrl: JSON!
+  hoverImageUrl: JSON!
+  productImages: [JSON!]!
+  colors: [String!]!
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String!
+  waterproof: Boolean
+  AdditionalInformation: [JSON!]!
+  plankWidth: String
+  ResidentialWarranty: String
+  CommmericallWarranty: String
+  category: UpdateCategoryInput
+  categoryId: Int
+  subcategory: UpdateSubCategoryInput
+  subCategoryId: UpdateSubCategoryInput
+}
+
+input UpdateCategoryInput {
+  name: String
+  description: String
+  posterImageUrl: JSON
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String
+  Recall_Cat: String
+  id: Int!
+}
+
+input UpdateSubCategoryInput {
+  name: String
+  description: String
+  posterImageUrl: JSON
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String
+  category: ID
+  Recall_subCat: String
+  id: Int!
+}
+
+input UpdateProductInput {
+  """products name"""
+  name: String
+  price: Int
+  discountPrice: Int
+  description: String
+  stock: Int
+  posterImageUrl: JSON
+  hoverImageUrl: JSON
+  productImages: [JSON!]
+  colors: [String!]
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String
+  waterproof: Boolean
+  AdditionalInformation: [JSON!]
+  plankWidth: String
+  ResidentialWarranty: String
+  CommmericallWarranty: String
+  category: UpdateCategoryInput
+  categoryId: Int
+  subcategory: UpdateSubCategoryInput
+  subCategoryId: UpdateSubCategoryInput
+  id: Int!
+}
+
+input CreateCategoryInput {
+  name: String!
+  description: String!
+  posterImageUrl: JSON!
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String!
+  Recall_Cat: String
+}
+
+input CreateSubCategoryInput {
+  name: String!
+  description: String!
+  posterImageUrl: JSON!
+  createdAt: DateTime
+  updatedAt: DateTime
+  Canonical_Tag: String
+  Meta_Description: String
+  Meta_Title: String
+  last_editedBy: String
+  custom_url: String!
+  category: ID
+  Recall_subCat: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

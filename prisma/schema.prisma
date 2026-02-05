@@ -1,0 +1,270 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Category {
+  id                 Int             @id @default(autoincrement())
+  name               String          @unique
+  description        String?
+  products           Products[]
+  createdAt          DateTime?       @default(now())
+  updatedAt          DateTime?       @updatedAt
+  posterImageUrl     Json
+  last_editedBy      String?
+  short_description  String?
+  Canonical_Tag      String?
+  Meta_Description   String?
+  Meta_Title         String?
+  custom_url         String
+  subcategories      subCategories[] @relation()
+  Recall_Cat         String?
+  topHeading         String?
+  whatAmiImageBanner Json?
+  RecallUrl          String?
+  accessories        Acessories[]    @relation()
+  recalledSubCats    subCategories[] @relation("RecallCategories")
+  price              String?
+  status             BlogStatus?     @default(PUBLISHED)
+}
+
+model Products {
+  id                    Int            @id @default(autoincrement())
+  name                  String
+  price                 Int
+  description           String
+  stock                 Int
+  discountPrice         Int?
+  posterImageUrl        Json
+  hoverImageUrl         Json?
+  productImages         Json[]
+  colorCode             Int?
+  createdAt             DateTime?      @default(now())
+  updatedAt             DateTime?      @default(now())
+  Canonical_Tag         String?
+  Meta_Description      String?
+  Meta_Title            String?
+  last_editedBy         String?
+  custom_url            String
+  waterproof            Boolean        @default(false)
+  AdditionalInformation Json[]         @default([])
+  FAQS                  Json[]         @default([])
+  boxCoverage           String?
+  plankWidth            String?
+  thickness             String?
+  ResidentialWarranty   String?
+  CommmericallWarranty  String?
+  categoryId            Int?
+  short_description     String?
+  category              Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  subCategoryId         Int?
+  subcategory           subCategories? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
+  featureImages         Json[]         @default([])
+  acessories            Acessories[]   @relation("ProductAccessories")
+  colors                Json[]         @default([])
+  sizes                 Json[]         @default([])
+  sku String?
+  status                BlogStatus?    @default(PUBLISHED)
+  stockUpdateDate     DateTime?
+}
+
+model subCategories {
+  id                      Int         @id @default(autoincrement())
+  name                    String
+  description             String?
+  products                Products[]
+  createdAt               DateTime?   @default(now())
+  updatedAt               DateTime?   @updatedAt
+  posterImageUrl          Json?
+  last_editedBy           String?
+  short_description       String?
+  Canonical_Tag           String?
+  Meta_Description        String?
+  Meta_Title              String?
+  categoryId              Int?
+  category                Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  custom_url              String
+  whatAmiImage            Json[]      @default([])
+  homePageImage           Json?
+  whatAmiImageBanner      Json?
+  BannerImage             Json?
+  Heading                 String?
+  whatAmiTopHeading       String?
+  whatamIdetails          Json[]      @default([])
+  recalledByCategories    Category[]  @relation("RecallCategories")
+  price                   String?
+  sizes                   Json[]      @default([])
+  whatIamEndpoint         String?
+    sku String?
+  // whatamI
+  whatAmiCanonical_Tag    String?
+  whatAmiMeta_Description String?
+  whatAmiMeta_Title       String?
+  status                  BlogStatus? @default(PUBLISHED)
+}
+
+model Admins {
+  id                     Int         @id @default(autoincrement())
+  fullname               String
+  email                  String      @unique
+  password               String
+  canAddProduct          Boolean     @default(false)
+  canEditProduct         Boolean     @default(false)
+  canDeleteProduct       Boolean     @default(false)
+  canAddCategory         Boolean     @default(false)
+  canDeleteCategory      Boolean     @default(false)
+  canEditCategory        Boolean     @default(false)
+  canCheckProfit         Boolean     @default(false)
+  canCheckRevenue        Boolean     @default(false)
+  canCheckVisitors       Boolean     @default(false)
+  canViewUsers           Boolean     @default(false)
+  canViewSales           Boolean     @default(false)
+  canVeiwAdmins          Boolean     @default(false)
+  canVeiwTotalproducts   Boolean     @default(false)
+  canVeiwTotalCategories Boolean     @default(false)
+  posterImageUrl         Json?
+  role                   String      @default("Admin")
+  status                 BlogStatus? @default(PUBLISHED)
+}
+
+model Acessories {
+  id                    Int         @id @default(autoincrement())
+  name                  String
+  price                 Int
+  description           String
+  stock                 Int
+  discountPrice         Int?
+  posterImageUrl        Json
+  hoverImageUrl         Json?
+  productImages         Json[]
+  colors                Json[]      @default([])
+  createdAt             DateTime?   @default(now())
+  updatedAt             DateTime?   @default(now())
+  Canonical_Tag         String?
+  Meta_Description      String?
+  Meta_Title            String?
+  last_editedBy         String?
+  custom_url            String
+  AdditionalInformation Json[]      @default([])
+  FAQS                  Json[]      @default([])
+  boxCoverage           String?
+  categoryId            Int?
+  short_description     String?
+  featureImages         Json[]      @default([])
+  products              Products[]  @relation("ProductAccessories")
+  category              Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  sizes                 Json[]      @default([])
+  lengthPrice           String?
+    sku String?
+  status                BlogStatus? @default(PUBLISHED)
+}
+
+enum AppointsType {
+  installations
+  appointments
+}
+model Appointment {
+  id             Int          @id @default(autoincrement())
+  firstname      String
+  email          String
+  phoneNumber    String
+  whatsappNumber String?
+  area           String?
+  selectRooms    String?
+  preferredDate  DateTime?    @default(now())
+  preferredTime  String?
+  findUs         String?
+  comment        String?
+  contactMethod  Json?
+  AppointsType   AppointsType @default(installations)
+}
+
+model User {
+  id           Int     @id @default(autoincrement())
+  name         String
+  email        String  @unique
+  password     String
+  phone        String?
+  userImageUrl Json?
+}
+
+enum OrderStatus {
+  placed
+  shipped
+  delivered
+  cancel
+}
+
+model salesProducts {
+  id                 Int       @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  email              String
+  phone              String
+  city               String
+  country            String
+  address            String?
+  orderId            String    @unique
+  checkout           Boolean   @default(false)
+  paymentStatus      Boolean   @default(false)
+  isRefund           Boolean   @default(false)
+  currency           String?
+  transactionId      String?
+  integrationId      String?
+  amountCents        String?
+  success            Boolean   @default(false)
+  pending            Boolean   @default(false)
+  is3DSecure         String?
+  checkoutDate       DateTime  @default(now())
+  transactionDate    DateTime?
+  shipmentFee        Int?
+  deliveryStatus     Boolean   @default(false)
+  cardLastDigits     String?
+  products           Json[]    @default([])
+  note               String?
+  emirate            String?
+  totalPrice         Int
+  pay_methodType     String?
+  paymethod_sub_type String?
+  shippingMethod     Json?
+  orderStatus OrderStatus @default(placed)
+  otherCity          String?
+  isfreesample       Boolean?
+  deliveryDate       DateTime?
+}
+
+model Redirecturls {
+  id            Int         @id @default(autoincrement())
+  url           String      @unique()
+  redirectedUrl String
+  createdAt     DateTime?   @default(now())
+  updatedAt     DateTime?
+  status        BlogStatus? @default(PUBLISHED)
+}
+
+model GoogleToken {
+  id           Int      @id @default(autoincrement())
+  accessToken  String?
+  refreshToken String?
+  scope        String?
+  tokenType    String?
+  expiryDate   BigInt? // store timestamp in milliseconds
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
