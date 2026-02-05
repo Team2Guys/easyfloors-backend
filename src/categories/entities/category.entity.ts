@@ -3,7 +3,7 @@ import GraphQLJSON from 'graphql-type-json';
 import { Product } from '../../products/entities/product.entity';
 import { SubCategory } from '../../sub_categories/entities/sub_category.entity';
 import { Accessory } from '../../accessories/entities/accessory.entity';
-import { BlogStatus } from 'general/dto/enums/enum';
+import { BlogStatus } from '../../general/dto/enums/enum';
 
 @ObjectType()
 export class Category {

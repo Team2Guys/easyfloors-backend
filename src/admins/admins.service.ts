@@ -5,7 +5,7 @@ import { customHttpException } from '../utils/helper';
 import { PrismaService } from '../prisma/prisma.service';
 import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express'; // Import Response from Express
-import { AuthenticatedRequest } from 'type/express';
+import { AuthenticatedRequest } from '../type/express';
 
 @Injectable()
 export class AdminsService {

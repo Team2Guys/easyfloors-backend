@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreatedRedirecturls } from './dto/create-general.input';
-import { customHttpException } from 'utils/helper';
+import { customHttpException } from '../utils/helper';
 import { UpdateRedirecturls } from './dto/update-general.input';
 
 @Injectable()

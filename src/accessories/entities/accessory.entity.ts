@@ -2,7 +2,7 @@ import { Int, Field, ObjectType, ID } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
 import { Product } from '../../products/entities/product.entity';
 import { Category } from '../../categories/entities/category.entity';
-import { BlogStatus } from 'general/dto/enums/enum';
+import { BlogStatus } from '../../general/dto/enums/enum';
 
 @ObjectType()
 export class Accessory {

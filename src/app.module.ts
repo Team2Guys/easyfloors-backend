@@ -16,7 +16,7 @@ import { UserModule } from './user/user.module';
 import { SalesProductsModule } from './sales-products/sales-products.module';
 import { PrismaService } from './prisma/prisma.service';
 import { GeneralModule } from './general/general.module';
-import { GcpModule } from 'gcp/gcp.module';
+import { GcpModule } from './gcp/gcp.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import {
   ThrottlerGuard,
@@ -25,7 +25,7 @@ import {
   ThrottlerStorageService,
 } from '@nestjs/throttler';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { GqlThrottlerGuard } from 'general/GraphQLThrottlerGuard';
+import { GqlThrottlerGuard } from './general/GraphQLThrottlerGuard';
 
 @Module({
   imports: [

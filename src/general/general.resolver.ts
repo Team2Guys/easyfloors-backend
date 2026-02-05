@@ -3,7 +3,7 @@ import { GeneralService } from './general.service';
 import { Redirecturls } from './entities/general.entity';
 import { CreatedRedirecturls } from './dto/create-general.input';
 import { UpdateRedirecturls } from './dto/update-general.input';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '../decorators/public.decorator';
 
 @Resolver(() => Redirecturls)
 export class GeneralResolver {

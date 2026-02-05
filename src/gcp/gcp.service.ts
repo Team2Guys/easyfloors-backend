@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { google } from 'googleapis';
 import { GoogleAuthService } from './services/google-auth.service';
 import { timeStamp } from 'console';
-import { PrismaService } from 'prisma/prisma.service';
-import { customHttpException } from 'utils/helper';
+import { PrismaService } from '../prisma/prisma.service';
+import { customHttpException } from '../utils/helper';
 
 @Injectable()
 export class GoogleMerchantService {

@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { BlogStatus } from 'general/dto/enums/enum';
+import { BlogStatus } from '../../general/dto/enums/enum';
 
 @ObjectType()
 export class Redirecturls {

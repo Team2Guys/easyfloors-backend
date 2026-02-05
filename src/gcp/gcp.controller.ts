@@ -2,7 +2,7 @@ import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { GoogleAuthService } from './services/google-auth.service';
 import { GoogleMerchantService } from './gcp.service';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '../decorators/public.decorator';
 
 @Controller('google')
 export class GoogleController {

@@ -4,7 +4,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { customHttpException } from '../utils/helper';
 import { PrismaService } from '../prisma/prisma.service';
 import * as jwt from 'jsonwebtoken';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '../decorators/public.decorator';
 import { Response } from 'express';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
-import { OrderStatus } from 'sales-products/dto/create-sales-product.input';
+import { OrderStatus } from '../../sales-products/dto/create-sales-product.input';
 
 @ObjectType()
 export class SalesProduct {
@@ -215,7 +215,6 @@ export class paymentStatus {
 
   @Field(() => GraphQLJSON, { nullable: true })
   shippingMethod: any;
-
 
   @Field({ nullable: true })
   orderStatus: string;

@@ -5,7 +5,7 @@ import { graphqlUploadExpress } from 'graphql-upload';
 import cookieParser from 'cookie-parser';
 import { AuthGuard } from './gaurds/auth.guard';
 import helmet from 'helmet';
-import { GqlThrottlerGuard } from 'general/GraphQLThrottlerGuard';
+import { GqlThrottlerGuard } from './general/GraphQLThrottlerGuard';
 import {
   ThrottlerModuleOptions,
   ThrottlerStorageService,
