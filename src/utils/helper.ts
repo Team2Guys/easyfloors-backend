@@ -81,7 +81,7 @@ export const sendAppointmentEmail = async (
             background-color: #f9f9f9;
           }
           .header {
-            background-color: #bc6838;
+            background-color: #feb907;
             color: white;
             padding: 15px;
             text-align: center;
@@ -200,13 +200,13 @@ export const sendAppointmentEmail = async (
                 ? `
               <div class="field">
                 <span class="label">Preferred Contact Method:</span>
-                ${
-                  [
-                    contactMethod.whatsapp && 'WhatsApp',
-                    contactMethod.telephone && 'Call',
-                    contactMethod.email && 'Email'
-                  ].filter(Boolean).join(', ')
-                }
+                ${[
+                  contactMethod.whatsapp && 'WhatsApp',
+                  contactMethod.telephone && 'Call',
+                  contactMethod.email && 'Email',
+                ]
+                  .filter(Boolean)
+                  .join(', ')}
               </div>
                 `
                 : ''
@@ -262,7 +262,7 @@ export const contactusEmail = async (data: contactUsEmailInput) => {
             border-radius: 5px;
           }
           .header {
-            background-color: #bc6838;
+            background-color: #feb907;
             padding: 10px;
             text-align: center;
             border-radius: 5px 5px 0 0;
@@ -325,13 +325,12 @@ export const contactusEmail = async (data: contactUsEmailInput) => {
 };
 
 function formatedDate(date: Date): string {
-      return date.toLocaleDateString("en-US", {
-         year: "numeric",
-         month: "long",
-         day: "numeric",
-      });
-   }
-
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
 
 export const sendEmailHandler = async (
   orderDetails: orderEmailInput,
@@ -419,8 +418,8 @@ export const sendEmailHandler = async (
        margin: 20px auto;
        background-color: #fff;
        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-       border-top: 5px solid #BF6933;
-       border-bottom: 5px solid #BF6933;
+       border-top: 5px solid #feb907;
+       border-bottom: 5px solid #feb907;
     }
 
     .main-container {
@@ -456,7 +455,7 @@ export const sendEmailHandler = async (
     }
 
     .confirmed {
-       background-color: #BF6933;
+       background-color: #feb907;
        color: #fff;
     }
 
@@ -470,7 +469,7 @@ export const sendEmailHandler = async (
        display: block;
        width: 200px;
        text-align: center;
-       background-color: #BF6933;
+       background-color: #feb907;
        color: white !important;
        padding: 10px;
        margin: 20px auto;
@@ -507,7 +506,7 @@ export const sendEmailHandler = async (
     }
 
     .footer {
-       background-color: #BF6933;
+       background-color: #feb907;
        color: white;
        text-align: center;
        padding: 15px 0;
@@ -527,7 +526,7 @@ export const sendEmailHandler = async (
     }
 
     .features {
-       background-color: #ff6600;
+       background-color: #feb907;
        color: white;
        padding: 20px;
        display: flex;
@@ -555,7 +554,7 @@ export const sendEmailHandler = async (
     }
 
     .features {
-       background-color: #ff6600;
+       background-color: #feb907;
        color: white;
        width: 100%;
        align-items: center;
@@ -580,13 +579,11 @@ export const sendEmailHandler = async (
     }
 
     .categories a {
-       font-size: 11px;
+       font-size: 14px;
        font-weight: 100;
-       margin-top: 5px;
        text-decoration: none;
-       color: rgb(255, 255, 255);
+       color: #000000;
        padding: 10px 15px;
-       background-color: #BF6933;
        display: inline-block;
     }
 
@@ -602,11 +599,11 @@ export const sendEmailHandler = async (
     }
 
     .progress-container {
-       align-items: center;
-       justify-content: center;
        margin-top: 50px;
        margin-bottom: 50px;
        width: 100%;
+       max-width: 450px;
+       margin: 0 auto;
     }
 
     .step {
@@ -640,7 +637,7 @@ export const sendEmailHandler = async (
     }
 
     .completed .icon {
-       background-color: #ff6600;
+       background-color: #feb907;
        color: white;
        border: none;
     }
@@ -715,7 +712,7 @@ export const sendEmailHandler = async (
     <div class="main-container">
        <div class="header" style="text-align:center;">
           <img
-             src="https://res.cloudinary.com/dmmeqgdhv/image/upload/v1742982252/easyfloor_logo_2_goghap.jpg"
+             src="https://res.cloudinary.com/dvniplydn/image/upload/v1772187789/logo.jpg_odnlgf.png"
              alt="Brand Logo">
        </div>
        <h3 style="text-align:center; margin:0; padding:0; color: black;">ORDER#${orderId}</h3>
@@ -726,7 +723,7 @@ export const sendEmailHandler = async (
            ? `
      <h1 style="text-align:center; color: black;">${orderDetails.isfreesample ? 'Free Sample Goods Received' : 'Goods Received'}</h1>
        <div class="progress-container" style="text-align:center;">
-          <img src="https://res.cloudinary.com/dmmeqgdhv/image/upload/v1762113137/Easyfloor_shipment_3_cau5qc.jpg"
+          <img src="https://res.cloudinary.com/dvniplydn/image/upload/v1772187242/delivered.jpg_ygnz9p.jpg"
              alt="Progress Status" style="width: 100%;">
        </div>
        <p class="order-para" style="text-align:center;">Dear <b>${firstName} ${lastName},</b></p>
@@ -745,7 +742,7 @@ export const sendEmailHandler = async (
        <h1 style="text-align:center; color: black;">${orderDetails.isfreesample ? 'Free Sample Goods Are Ready to Ship' : 'Goods Are Ready to Ship'}</h1>
 
        <div class="progress-container" style="text-align:center;">
-          <img src="https://res.cloudinary.com/dmmeqgdhv/image/upload/v1762113100/Easyfloor_shipment_2_pwkbir.jpg "
+          <img src="https://res.cloudinary.com/dvniplydn/image/upload/v1772187242/shipped.jpg_pymtqc.jpg"
              alt="Progress Status" style="width: 100%;">
        </div>
         <p class="order-para" style="text-align:center;">Dear <b>${firstName} ${lastName},</b></p>
@@ -760,14 +757,14 @@ export const sendEmailHandler = async (
        <h1 style="text-align:center; color: black;">${orderDetails.isfreesample ? 'Free Sample Order Confirmation' : 'Order Confirmation'}</h1>
 
        <div class="progress-container" style="text-align:center;">
-          <img src="https://res.cloudinary.com/dmmeqgdhv/image/upload/v1742982267/easyfloor_order_bhi6l1.jpg"
+          <img src="https://res.cloudinary.com/dvniplydn/image/upload/v1772187242/confirm.jpg_b1vme7.jpg"
              alt="Progress Status" style="width: 100%;">
        </div>
        <p style="text-align:center;" class="order-para">Dear <b>Customer,</b></p>
        <p style="text-align:center;" class="order-para">Thank you very much for the order <br> you placed with <a
              href="https://easyfloors.ae/"><b>https://easyfloors.ae/</b></a></p>
-       <a href="https://easyfloors.ae/track-order/${orderDetails.orderId}" class="order-button"> ${orderDetails.isfreesample ? " View Your Free Sample Order" : "View Your Order"}</a>
-       <p style="text-align:center;" class="order-para">Your ${orderDetails.isfreesample ? "Free Sample order" : "order"} has now been sent to the warehouse to prepare for packing and
+       <a href="https://easyfloors.ae/track-order/${orderDetails.orderId}" class="order-button"> ${orderDetails.isfreesample ? ' View Your Free Sample Order' : 'View Your Order'}</a>
+       <p style="text-align:center;" class="order-para">Your ${orderDetails.isfreesample ? 'Free Sample order' : 'order'} has now been sent to the warehouse to prepare for packing and
           dispatch.</p>
        <p style="text-align:center;" class="order-para">Our team will be in touch soon to arrange the delivery with you.</p>
        <p style="text-align:center;" class="order-para">All The Best,</p>
@@ -799,23 +796,26 @@ export const sendEmailHandler = async (
                           ${
                             orderDetails.isfreesample
                               ? `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">Sample Piece</p>`
-                              : product.isClearance ?  
-                              `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">Bundle: ${Number(product.squareMeter).toFixed(2)} SQM</p>`
-                              : `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;"><b>${product?.category?.trim()?.toLowerCase() == 'accessories' ? 'No .of Pieces' : 'Area:'}:</b> ${product?.category?.trim()?.toLowerCase() == 'accessories' ? product.requiredBoxes : `${product.squareMeter} SQM`}</p>`
+                              : product.isClearance
+                                ? `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">Bundle: ${Number(product.squareMeter).toFixed(2)} SQM</p>`
+                                : `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;"><b>${product?.category?.trim()?.toLowerCase() == 'accessories' ? 'No .of Pieces' : 'Area:'}:</b> ${product?.category?.trim()?.toLowerCase() == 'accessories' ? product.requiredBoxes : `${product.squareMeter} SQM`}</p>`
                           }
-                               ${ (product?.category?.trim()?.toLowerCase() == 'accessories' || orderDetails.isfreesample) ? '' : product?.addInstallation
-                         ? `
+                               ${
+                                 product?.category?.trim()?.toLowerCase() ==
+                                   'accessories' || orderDetails.isfreesample
+                                   ? ''
+                                   : product?.addInstallation
+                                     ? `
                <p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">
                   <b>Installation Cost:</b> ${product?.installationCost.toFixed(2)}
                </p>
                `
-                         : 
-                         `
+                                     : `
                <p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">
                   <b>Installation:</b> Not included
                </p>
                `
-                     }
+                               }
 
                      ${
                        product?.selectedColor?.color
@@ -906,7 +906,7 @@ export const sendEmailHandler = async (
        </div> `
        }
 </body>
-<div style="text-align: center; margin-top: 20px; margin-bottom: 20px; background-color: #BF6933; padding: 14px;">
+<div style="text-align: center; margin-top: 20px; margin-bottom: 20px; background-color: #feb907; padding: 14px;">
           <img src="https://res.cloudinary.com/dgwsc8f0g/image/upload/v1739185483/features_lbnmr6.png" alt="features"
              style="display: block; margin: auto; max-width: 100%; height: auto;">
 </div>
