@@ -63,7 +63,6 @@ export class AccessoriesService {
   async update(id: number, updateAccessoryInput: UpdateAccessoryInput) {
     try {
       const { category, products, id: _, ...updateData } = updateAccessoryInput;
-      console.log(products, 'products');
       return await this.prisma.acessories.update({
         where: { id },
         data: {
@@ -115,7 +114,6 @@ export class AccessoriesService {
           id: true,
         },
       });
-      console.log(accessory, custom_url, category);
       return accessory;
     } catch (error) {
       console.log(error, 'error');

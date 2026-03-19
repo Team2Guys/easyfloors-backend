@@ -139,7 +139,6 @@ export class AdminsService {
         };
       }
       let admin = await this.prisma.admins.findUnique({ where: { id } });
-      console.log(admin, 'admins');
       return admin;
     } catch (error) {
       return customHttpException(error.message, 'INTERNAL_SERVER_ERROR');

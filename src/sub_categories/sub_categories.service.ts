@@ -83,8 +83,6 @@ export class SubCategoriesService {
         ...updateData
       } = updateSubCategoryInput;
 
-      console.log(id, 'Function Called', updateSubCategoryInput.category);
-
       return await this.prisma.subCategories.update({
         where: { id },
         data: {

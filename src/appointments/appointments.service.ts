@@ -8,7 +8,6 @@ export class AppointmentsService {
   constructor(private prisma: PrismaService) {}
   async create(createAppointmentInput: CreateAppointmentInput) {
     try {
-      console.log(createAppointmentInput.email, 'email');
       await sendAppointmentEmail(createAppointmentInput);
       const appointments = await this.prisma.appointment.create({
         data: createAppointmentInput,

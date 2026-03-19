@@ -97,7 +97,6 @@ export class GoogleMerchantService {
         });
         let updatedAt = new Date();
 
-        console.log(item?.name, 'product', product?.sku, stock);
         if (product) {
           await this.prisma.products.updateMany({
             where: { sku },

@@ -6,8 +6,6 @@ import { FileUpload } from 'graphql-upload';
 export class FileUploadingService {
   async create(file: FileUpload) {
     try {
-      console.log(file, 'result');
-
       const { createReadStream, filename } = file;
       const result: any = await new Promise((resolve, reject) => {
         const stream = createReadStream();
@@ -20,8 +18,6 @@ export class FileUploadingService {
         );
         stream.pipe(upload);
       });
-
-      console.log(result, 'result');
       return { imageUrl: result.secure_url, public_id: result.public_id };
     } catch (error) {
       throw new Error('File upload failed: ' + error.message);

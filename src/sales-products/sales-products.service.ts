@@ -62,11 +62,9 @@ export class SalesProductsService {
         'https://uae.paymob.com/v1/intention/',
         requestOptions,
       );
-      console.log(response, 'response');
 
       let result = await response.json();
 
-      console.log(result.intention_order_id, 'intention id');
       if (!result.intention_order_id)
         return customHttpException('Order Id not found ', 'NOT_FOUND');
 
@@ -83,7 +81,6 @@ export class SalesProductsService {
         },
       });
 
-      console.log(result, 'result');
       return { paymentKey: result };
     } catch (error) {
       console.log(error, 'error');
@@ -93,8 +90,7 @@ export class SalesProductsService {
 
   async findAll() {
     try {
-      let orders =  await this.prisma.salesProducts.findMany();
-console.log(orders, 'orders');
+      let orders = await this.prisma.salesProducts.findMany();
       return orders;
     } catch (error) {
       customHttpException(error.message, 'INTERNAL_SERVER_ERROR');
@@ -112,40 +108,47 @@ console.log(orders, 'orders');
         return;
       }
 
-    const updatedOrder = await this.prisma.salesProducts.update({
-      where: { orderId },
-      data: { orderStatus },
-    });
-    if(orderStatus.toLowerCase() === 'shipped' || orderStatus.toLowerCase() === 'delivered'){
-      await sendEmailHandler(updatedOrder as orderEmailInput , order.email, orderStatus);
+      const updatedOrder = await this.prisma.salesProducts.update({
+        where: { orderId },
+        data: { orderStatus },
+      });
+      if (
+        orderStatus.toLowerCase() === 'shipped' ||
+        orderStatus.toLowerCase() === 'delivered'
+      ) {
+        await sendEmailHandler(
+          updatedOrder as orderEmailInput,
+          order.email,
+          orderStatus,
+        );
+      }
+      return updatedOrder;
+    } catch (error) {
+      return customHttpException(error.message, 'INTERNAL_SERVER_ERROR');
     }
-    return updatedOrder;
-  } catch (error) {
-    return customHttpException(error.message, 'INTERNAL_SERVER_ERROR');
   }
-}
 
- async updateOrderdeliveryDate(orderId: string, deliveryDate: Date) {
-  try {
-    const order = await this.prisma.salesProducts.findUnique({
-      where: { orderId },
-    });
+  async updateOrderdeliveryDate(orderId: string, deliveryDate: Date) {
+    try {
+      const order = await this.prisma.salesProducts.findUnique({
+        where: { orderId },
+      });
 
-    if (!order) {
-      customHttpException(`Order with ID ${orderId} not found`);
-      return;
+      if (!order) {
+        customHttpException(`Order with ID ${orderId} not found`);
+        return;
+      }
+
+      const updatedOrder = await this.prisma.salesProducts.update({
+        where: { orderId },
+        data: { deliveryDate },
+      });
+
+      return updatedOrder;
+    } catch (error) {
+      return customHttpException(error.message, 'INTERNAL_SERVER_ERROR');
     }
-
-    const updatedOrder = await this.prisma.salesProducts.update({
-      where: { orderId },
-      data: { deliveryDate  },
-    });
-
-    return updatedOrder;
-  } catch (error) {
-    return customHttpException(error.message, 'INTERNAL_SERVER_ERROR');
   }
-}
 
   async findOne(id: string) {
     try {
@@ -159,11 +162,10 @@ console.log(orders, 'orders');
 
   async findOrderByMail(email: string) {
     try {
-      console.log(email, 'email');
       let users = await this.prisma.salesProducts.findMany({
         where: { email },
       });
-      console.log(users, 'users');
+
       return users;
     } catch (error) {
       customHttpException(error.message, 'INTERNAL_SERVER_ERROR');
@@ -172,7 +174,6 @@ console.log(orders, 'orders');
 
   async get_all_records() {
     try {
-
       const [
         totalProducts,
         totalCategories,
@@ -181,7 +182,7 @@ console.log(orders, 'orders');
         totalAdmins,
         totalAccessories,
         appointments,
-        salesProdu
+        salesProdu,
       ] = await Promise.all([
         this.prisma.products.count(),
         this.prisma.category.count(),
@@ -192,7 +193,7 @@ console.log(orders, 'orders');
         this.prisma.appointment.findMany(),
         this.prisma.salesProducts.findMany(),
       ]);
-    
+
       const reducer_handler = (arr: any[], Boxes?: boolean) => {
         return arr.reduce((totalQuantity: number, currentValue: any) => {
           const productQuantitySum = currentValue.products.reduce(
@@ -344,7 +345,7 @@ console.log(orders, 'orders');
       const { totalPrice, shipmentFee, products, ...billing_data } =
         createSalesProductInput;
       const orderId = Date.now();
-      console.log(orderId, 'order id ');
+
       var myHeaders = new Headers();
       myHeaders.append(
         'Authorization',
@@ -465,7 +466,7 @@ console.log(orders, 'orders');
         Orders: item.count,
       };
     });
-    console.log(completeMonthlyData, 'completeMonthlyData');
+
     return { completeMonthlyData };
   }
 
@@ -514,7 +515,6 @@ console.log(orders, 'orders');
       };
     });
 
-    console.log(finalStats, 'finalStats');
     return finalStats;
   }
 }

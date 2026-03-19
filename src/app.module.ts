@@ -47,6 +47,7 @@ import { GqlThrottlerGuard } from './general/GraphQLThrottlerGuard';
       csrfPrevention: false,
       playground: true,
       context: ({ req, res }) => ({ req, res }),
+      introspection: true,
     }),
 
     ScheduleModule.forRoot(),

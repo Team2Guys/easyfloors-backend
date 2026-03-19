@@ -225,7 +225,7 @@ export const sendAppointmentEmail = async (
       </body>
     </html>
   `;
-  console.log(AppointsType, 'AppointsType');
+
   try {
     await transporter.sendMail({
       from: `${AppointsType == 'appointments' ? 'Measurement Appointment' : 'Installation Appointments'} ${process.env.EMAIL_USER}`,
