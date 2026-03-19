@@ -88,7 +88,6 @@ export class CategoriesService {
           updatedAt: updateDate,
         },
       });
-      console.log(updatedCategory, 'updatedCategory');
 
       return updatedCategory;
     } catch (error) {
@@ -101,8 +100,6 @@ export class CategoriesService {
 
   async remove(id: number) {
     try {
-      console.log(id, 'id', typeof id);
-
       const category = await this.prisma.category.findUnique({
         where: { id: id },
       });
@@ -114,8 +111,6 @@ export class CategoriesService {
       let response = await this.prisma.category.delete({
         where: { id: id },
       });
-
-      console.log(response, 'response');
       return response;
     } catch (error) {
       return customHttpException(

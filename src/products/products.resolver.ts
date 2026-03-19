@@ -20,7 +20,6 @@ export class ProductsResolver {
   @Public()
   @Query(() => [Product], { name: 'products' })
   findAll(@Context('req') req) {
-    console.log(+1, 'request recieved');
     return this.productsService.findAll();
   }
 

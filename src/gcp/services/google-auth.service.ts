@@ -58,7 +58,6 @@ export class GoogleAuthService {
     const credentials = JSON.parse(
       Buffer.from(base64Key, 'base64').toString('utf-8'),
     );
-    console.log(credentials, 'credentials', base64Key);
 
     const auth = new google.auth.GoogleAuth({
       credentials,

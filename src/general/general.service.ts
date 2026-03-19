@@ -50,7 +50,6 @@ export class GeneralService {
         where: { url: endPoint.trim() },
       });
 
-      console.log(endPoint, 'endpoint', urls);
       return urls;
     } catch (error) {
       customHttpException(error);
