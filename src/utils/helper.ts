@@ -787,7 +787,7 @@ export const sendEmailHandler = async (
                     (product, index) => `
                 <tr key="${index}">
                    <td style="padding: 10px 2px;" class="product-title-wrapper">
-                      <div style="display:flex; gap:5px; align-items:center; justify-content:center;">
+                      <div style="display:flex; gap:5px; align-items:center; justify-content:flex-start;">
                          <img
                             src="${product.image}"
                             alt="${product.name}" style="height:70px; width:70px;" class="product-img">
