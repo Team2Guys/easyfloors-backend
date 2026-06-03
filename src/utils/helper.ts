@@ -225,7 +225,7 @@ export const sendAppointmentEmail = async (
       </body>
     </html>
   `;
-
+  console.log(AppointsType, 'AppointsType');
   try {
     await transporter.sendMail({
       from: `${AppointsType == 'appointments' ? 'Measurement Appointment' : 'Installation Appointments'} ${process.env.EMAIL_USER}`,
@@ -774,9 +774,11 @@ export const sendEmailHandler = async (
           <table class="purchase-table">
              <thead>
                 <tr>
-                   <th style="padding: 10px 2px; width: 60%" class="table-font">Product</th>
-                   <th style="padding: 10px 2px;  width: 25%; text-align: center;" class="table-font">Product Price</th>
-                   <th style="padding: 10px 2px;  width: 15%; text-align: center;" class="table-font">Price</th>
+                   <th style="padding: 10px 2px; width: 50%" class="table-font">Product</th>
+                   <th style="padding: 10px 2px;  width: 15%; text-align: center;" class="table-font">Price excl VAT</th>
+                   <th style="padding: 10px 2px;  width: 10%; text-align: center;" class="table-font">VAT rate</th>
+                   <th style="padding: 10px 2px;  width: 12.5%; text-align: center;" class="table-font">VAT amount</th>
+                   <th style="padding: 10px 2px;  width: 15%; text-align: center;" class="table-font">Price incl VAT</th>
                 </tr>
              </thead>
 
@@ -787,10 +789,10 @@ export const sendEmailHandler = async (
                     (product, index) => `
                 <tr key="${index}">
                    <td style="padding: 10px 2px;" class="product-title-wrapper">
-                      <div style="display:flex; gap:5px; align-items:center; justify-content:flex-start;">
+                      <div style="display:flex; gap:5px; align-items:center; justify-content:center;">
                          <img
                             src="${product.image}"
-                            alt="${product.name}" style="height:70px; width:70px;" class="product-img">
+                            alt="${product.name}" style="height:60px; width:60px;" class="product-img">
                          <div>
                             <p class="table-font" style="margin-left: 5px; margin-bottom: 0px; margin-top: 0px; color: black; font-weight: 600;">${product.name}</p>
                           ${
@@ -829,7 +831,9 @@ export const sendEmailHandler = async (
                          </div>
                       </div>
                    </td>
-                   <td class="table-font" style="text-align:center; padding: 10px 2px;">${product.price || 'Free'}</td>
+                   <td class="table-font" style="text-align:center; padding: 10px 2px;">${(product.totalPrice - ((product.totalPrice) - (product.totalPrice / 1.05))).toFixed(2) || 'Free'}</td>
+                   <td class="table-font" style="text-align:center; padding: 10px 2px;">5.00%</td>
+                   <td class="table-font" style="text-align:center; padding: 10px 2px;">${((product.totalPrice) - (product.totalPrice / 1.05)).toFixed(2) || 'Free'}</td>
                    <td class="table-font" style="text-align:center; padding: 10px 2px;">${product.totalPrice.toFixed(2) || 'Free'}</td>
                 </tr>
                 `,
