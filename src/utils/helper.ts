@@ -134,35 +134,32 @@ export const sendAppointmentEmail = async (
               <span class="label">Phone Number:</span> ${phoneNumber}
             </div>
 
-            ${
-              whatsappNumber
-                ? `
+            ${whatsappNumber
+      ? `
               <div class="field">
                 <span class="label">WhatsApp Number:</span> ${whatsappNumber}
               </div>
             `
-                : ''
-            }
+      : ''
+    }
 
-            ${
-              area
-                ? `
+            ${area
+      ? `
               <div class="field">
                 <span class="label">Area:</span> ${area}
               </div>
             `
-                : ''
-            }
+      : ''
+    }
 
-            ${
-              selectRooms
-                ? `
+            ${selectRooms
+      ? `
               <div class="field">
                 <span class="label">Approximate Area :</span> ${selectRooms}
               </div>
             `
-                : ''
-            }
+      : ''
+    }
 
             <div class="field highlight">
               <span class="label">Preferred Date:</span> 
@@ -174,43 +171,40 @@ export const sendAppointmentEmail = async (
               ${preferredTime || 'Not specified'}
             </div>
 
-            ${
-              findUs
-                ? `
+            ${findUs
+      ? `
               <div class="field">
                 <span class="label">How You Found Us:</span> ${findUs}
               </div>
             `
-                : ''
-            }
+      : ''
+    }
 
-            ${
-              comment
-                ? `
+            ${comment
+      ? `
               <div class="field">
                 <span class="label">Comments:</span>
                 <p>${comment}</p>
               </div>
             `
-                : ''
-            }
+      : ''
+    }
 
-            ${
-              contactMethod
-                ? `
+            ${contactMethod
+      ? `
               <div class="field">
                 <span class="label">Preferred Contact Method:</span>
                 ${[
-                  contactMethod.whatsapp && 'WhatsApp',
-                  contactMethod.telephone && 'Call',
-                  contactMethod.email && 'Email',
-                ]
-                  .filter(Boolean)
-                  .join(', ')}
+        contactMethod.whatsapp && 'WhatsApp',
+        contactMethod.telephone && 'Call',
+        contactMethod.email && 'Email',
+      ]
+        .filter(Boolean)
+        .join(', ')}
               </div>
                 `
-                : ''
-            }
+      : ''
+    }
 
 <div class='text-center'>Measurement appointment will be charged at <strong>AED 150</strong> for Dubai and other emirates <strong>AED 250</strong>, which is fully <strong>REFUNDABLE</strong> if you place an order with us.</div>
 
@@ -367,9 +361,11 @@ export const sendEmailHandler = async (
   }
   const orderDate = new Date(
     orderDetails?.transactionDate ||
-      (orderDetails as any)?.checkoutDate ||
-      Date.now(),
+    (orderDetails as any)?.checkoutDate ||
+    Date.now(),
   );
+
+  const subTotal = totalPrice && shipmentFee ? totalPrice - shipmentFee : totalPrice || 0;
 
   function trackingOrder(
     shippingMethod: 'Standard Shipping' | 'Express Shipping' | 'Self Collect',
@@ -718,9 +714,8 @@ export const sendEmailHandler = async (
        <h3 style="text-align:center; margin:0; padding:0; color: black;">ORDER#${orderId}</h3>
        <p style="text-align:center;margin:0;padding:0; color: black;">${formattedDate}</p>
        
-       ${
-         orderStatus === 'delivered'
-           ? `
+       ${orderStatus === 'delivered'
+      ? `
      <h1 style="text-align:center; color: black;">${orderDetails.isfreesample ? 'Free Sample Goods Received' : 'Goods Received'}</h1>
        <div class="progress-container" style="text-align:center;">
           <img src="https://res.cloudinary.com/dvniplydn/image/upload/v1772187242/delivered.jpg_ygnz9p.jpg"
@@ -737,8 +732,8 @@ export const sendEmailHandler = async (
 
        
        `
-           : orderStatus === 'shipped'
-             ? `
+      : orderStatus === 'shipped'
+        ? `
        <h1 style="text-align:center; color: black;">${orderDetails.isfreesample ? 'Free Sample Goods Are Ready to Ship' : 'Goods Are Ready to Ship'}</h1>
 
        <div class="progress-container" style="text-align:center;">
@@ -753,7 +748,7 @@ export const sendEmailHandler = async (
         <p class="order-para" style="text-align:center;">In the meantime, sit back and relax and we’ll see you soon!</p>
        <p class="order-para" style="text-align:center;">All The Best</p>
        `
-             : `
+        : `
        <h1 style="text-align:center; color: black;">${orderDetails.isfreesample ? 'Free Sample Order Confirmation' : 'Order Confirmation'}</h1>
 
        <div class="progress-container" style="text-align:center;">
@@ -785,8 +780,8 @@ export const sendEmailHandler = async (
 
              <tbody>
                 ${products
-                  ?.map(
-                    (product, index) => `
+          ?.map(
+            (product, index) => `
                 <tr key="${index}">
                    <td style="padding: 10px 2px;" class="product-title-wrapper">
                       <div style="display:flex; gap:5px; align-items:center; justify-content:center;">
@@ -795,39 +790,36 @@ export const sendEmailHandler = async (
                             alt="${product.name}" style="height:60px; width:60px;" class="product-img">
                          <div>
                             <p class="table-font" style="margin-left: 5px; margin-bottom: 0px; margin-top: 0px; color: black; font-weight: 600;">${product.name}</p>
-                          ${
-                            orderDetails.isfreesample
-                              ? `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">Sample Piece</p>`
-                              : product.isClearance
-                                ? `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">Bundle: ${Number(product.squareMeter).toFixed(2)} SQM</p>`
-                                : `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;"><b>${product?.category?.trim()?.toLowerCase() == 'accessories' ? 'No .of Pieces' : 'Area:'}:</b> ${product?.category?.trim()?.toLowerCase() == 'accessories' ? product.requiredBoxes : `${product.squareMeter} SQM`}</p>`
-                          }
-                               ${
-                                 product?.category?.trim()?.toLowerCase() ==
-                                   'accessories' || orderDetails.isfreesample
-                                   ? ''
-                                   : product?.addInstallation
-                                     ? `
+                          ${orderDetails.isfreesample
+                ? `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">Sample Piece</p>`
+                : product.isClearance
+                  ? `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">Bundle: ${Number(product.squareMeter).toFixed(2)} SQM</p>`
+                  : `<p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;"><b>${product?.category?.trim()?.toLowerCase() == 'accessories' ? 'No .of Pieces' : 'Area:'}:</b> ${product?.category?.trim()?.toLowerCase() == 'accessories' ? product.requiredBoxes : `${product.squareMeter} SQM`}</p>`
+              }
+                               ${product?.category?.trim()?.toLowerCase() ==
+                'accessories' || orderDetails.isfreesample
+                ? ''
+                : product?.addInstallation
+                  ? `
                <p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">
                   <b>Installation Cost:</b> ${product?.installationCost.toFixed(2)}
                </p>
                `
-                                     : `
+                  : `
                <p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">
                   <b>Installation:</b> Not included
                </p>
                `
-                               }
+              }
 
-                     ${
-                       product?.selectedColor?.color
-                         ? `
+                     ${product?.selectedColor?.color
+                ? `
                <p class="table-font" style="margin-left: 5px; margin-top: 5px; color: black;">
                   <b>Color:</b> ${product?.selectedColor?.colorName} (${product?.selectedColor?.color})
                </p>
                `
-                         : ''
-                     }
+                : ''
+              }
                          </div>
                       </div>
                    </td>
@@ -837,8 +829,8 @@ export const sendEmailHandler = async (
                    <td class="table-font" style="text-align:center; padding: 10px 2px;">${product.totalPrice.toFixed(2) || 'Free'}</td>
                 </tr>
                 `,
-                  )
-                  .join('')}
+          )
+          .join('')}
              </tbody>
 
 
@@ -890,12 +882,16 @@ export const sendEmailHandler = async (
                       <table style="border-collapse: collapse;">
                          <tr>
                             <td colspan="5" style="padding: 8px;" class="table-font">Subtotal</td>
-                            <td style="padding: 8px;" class="table-font">${totalPrice && shipmentFee ? totalPrice - shipmentFee : totalPrice || 0}</td>
+                            <td style="padding: 8px;" class="table-font">${(subTotal - ((subTotal) - (subTotal / 1.05))).toFixed(2)}</td>
                          </tr>
-                         <tr style="border-bottom: 2px solid #ccc;">
+                         <tr>
                             <td colspan="5" style="padding: 8px;" class="table-font">Shipment</td>
                             <td style="padding: 8px;" class="table-font">${shipmentFee === 0 ? 'Free' : shipmentFee}</td>
                          </tr>
+                          <tr style="border-bottom: 2px solid #ccc;">
+                              <td colspan="5" style="padding: 8px;" class="table-font">VAT</td>
+                              <td style="padding: 8px;" class="table-font">${(((totalPrice || 0) - ((subTotal - ((subTotal) - (subTotal / 1.05))))) - (shipmentFee || 0)).toFixed(2)}</td>
+                           </tr>
                          <tr>
                             <td colspan="5" style="padding: 8px; font-weight: bold; " class="table-font">Total Incl. VAT</td>
                             <td style="padding: 8px; font-weight: bold;" class="table-font">${totalPrice || 0}</td>
@@ -908,7 +904,7 @@ export const sendEmailHandler = async (
              </tr>
              </table>
        </div> `
-       }
+    }
 </body>
 <div style="text-align: center; margin-top: 20px; margin-bottom: 20px; background-color: #feb907; padding: 14px;">
           <img src="https://res.cloudinary.com/dgwsc8f0g/image/upload/v1739185483/features_lbnmr6.png" alt="features"
