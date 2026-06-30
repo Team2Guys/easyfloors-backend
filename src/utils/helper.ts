@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CreateAppointmentInput } from '../appointments/dto/create-appointment.input';
+import { CreateB2bQuoteInput } from '../b2b_quotes/dto/create-b2b-quote.input';
 import nodemailer from 'nodemailer';
 import {
   contactUsEmailInput,
@@ -236,6 +237,169 @@ export const sendAppointmentEmail = async (
   } catch (error) {
     console.error('Error sending appointment email:', error);
     throw new Error('Failed to send appointment confirmation email');
+  }
+};
+
+export const sendB2BQuoteEmail = async (quoteData: CreateB2bQuoteInput) => {
+  const {
+    fullName,
+    phone,
+    email,
+    companyName,
+    role,
+    quantity,
+    productRequired,
+    projectStatus,
+    budgetRange,
+    additionalInfo,
+    tradeLicense,
+    trnNumber,
+  } = quoteData;
+
+  // Normalise the multi-select product field into a readable string.
+  const productPreference =
+    Array.isArray(productRequired) && productRequired.length
+      ? productRequired
+          .map((p: any) =>
+            typeof p === 'string' ? p : p?.label || p?.name || p?.value || '',
+          )
+          .filter(Boolean)
+          .join(', ')
+      : '';
+
+  // Trade license is an uploaded asset (Cloudinary-style Json). Link to it when available.
+  const licenseUrl =
+    tradeLicense &&
+    (tradeLicense.secure_url ||
+      tradeLicense.url ||
+      (Array.isArray(tradeLicense) && tradeLicense[0]?.secure_url) ||
+      (Array.isArray(tradeLicense) && tradeLicense[0]?.url));
+
+  // Icons are hosted as PNGs on Cloudinary so they render in every mail client
+  // (Gmail, Outlook, etc. strip inline SVG, which is why they didn't show before).
+  const ICON_BASE =
+    'https://res.cloudinary.com/dmmeqgdhv/image/upload/w_88,h_88,c_fit/b2b-quote-icons';
+  const icon = (name: string, alt: string) =>
+    `<img src="${ICON_BASE}/${name}.png" width="22" height="22" alt="${alt}" style="display:block; border:0; outline:none;" />`;
+  const icons = {
+    user: icon('user', 'Full name'),
+    email: icon('email', 'Email'),
+    phone: icon('phone', 'Phone'),
+    role: icon('role', 'Role'),
+    company: icon('company', 'Company'),
+    product: icon('product', 'Product'),
+    quantity: icon('quantity', 'Quantity'),
+    budget: icon('budget', 'Budget'),
+    requirements: icon('requirements', 'Requirements'),
+    doc: icon('doc', 'Document'),
+  };
+
+  // A single icon + label + value block (used full-width and inside 2-column rows).
+  const block = (
+    icon: string,
+    label: string,
+    value: string,
+    valueStyle = '',
+  ) => `
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;">
+      <tr>
+        <td width="34" valign="top" style="padding-top:1px;">${icon}</td>
+        <td valign="top" style="padding-left:4px;">
+          <div style="font-size:11px; letter-spacing:0.8px; text-transform:uppercase; color:#9a9a9a; font-weight:bold; margin-bottom:6px; font-family:Arial, sans-serif;">${label}</div>
+          <div style="font-size:16px; color:#2b2b2b; font-family:Arial, sans-serif; line-height:1.4; ${valueStyle}">${value}</div>
+        </td>
+      </tr>
+    </table>`;
+
+  const fullRow = (
+    icon: string,
+    label: string,
+    value: string,
+    valueStyle = '',
+  ) =>
+    value
+      ? `<tr><td colspan="2" style="padding:16px 6px; border-bottom:1px solid #e6e6e6;">${block(icon, label, value, valueStyle)}</td></tr>`
+      : '';
+
+  const twoColRow = (left: string, right: string) => `
+    <tr>
+      <td width="50%" valign="top" style="padding:16px 14px 16px 6px; border-bottom:1px solid #e6e6e6;">${left}</td>
+      <td width="50%" valign="top" style="padding:16px 6px 16px 14px; border-bottom:1px solid #e6e6e6;">${right}</td>
+    </tr>`;
+
+  const licenseValue = licenseUrl
+    ? `<a href="${licenseUrl}" target="_blank" style="color:#2b2b2b; text-decoration:underline;">Uploaded</a>`
+    : 'Uploaded';
+
+  const htmlTemplate = `<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin:0; padding:0; background-color:#ffffff; font-family:Arial, sans-serif;">
+      <div style="max-width:520px; margin:24px auto; background:#f4f4f4; border-radius:10px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.08);">
+
+        <!-- Header bar -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#feb907;">
+          <tr>
+            <td style="padding:15px 22px; font-size:12px; font-weight:bold; letter-spacing:1px; text-transform:uppercase; color:#3d2f00; font-family:Arial, sans-serif;">Inquiry Summary</td>
+            <td align="right" style="padding:15px 22px; font-size:12px; font-weight:bold; letter-spacing:0.5px; color:#3d2f00; font-family:Arial, sans-serif;">REF: #EF-${new Date().getFullYear()}-B2B</td>
+          </tr>
+        </table>
+
+        <!-- Details -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; padding:0; background:#f4f4f4;">
+          <tr><td style="padding:6px 16px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              ${fullRow(icons.user, 'Full Name', fullName)}
+              ${fullRow(icons.email, 'Email Address', email)}
+              ${fullRow(icons.phone, 'Phone / WhatsApp', phone)}
+              ${fullRow(icons.role, 'Your Role', role || '')}
+              ${fullRow(icons.company, 'Company Name', companyName)}
+              ${fullRow(icons.product, 'Product Preference', productPreference)}
+              ${twoColRow(
+                block(icons.quantity, 'Quantity', quantity),
+                block(icons.budget, 'Budget', budgetRange || '—'),
+              )}
+              ${fullRow(
+                icons.requirements,
+                'Requirements',
+                additionalInfo ? `"${additionalInfo}"` : '',
+                'font-style:italic; color:#555555;',
+              )}
+              ${twoColRow(
+                block(icons.doc, 'Trade License', licenseValue),
+                block(icons.doc, 'TRN Number', trnNumber),
+              )}
+            </table>
+          </td></tr>
+        </table>
+
+        <div style="height:14px; background:#f4f4f4;"></div>
+      </div>
+    </body>
+  </html>`;
+
+  try {
+    // Internal notification to the B2B / sales team.
+    await transporter.sendMail({
+      from: `B2B Quote Request @EF ${process.env.EMAIL_USER}`,
+      to: `${process.env.EMAIL_USER},${process.env.ORDER_MAIL1},${process.env.ORDER_MAIL2},${process.env.ORDER_MAIL3}`,
+      subject: `New B2B Flooring Quote Request from ${companyName}`,
+      html: htmlTemplate,
+    });
+
+    // Acknowledgement to the customer.
+    await transporter.sendMail({
+      from: `EasyFloors B2B ${process.env.EMAIL_USER}`,
+      to: `${email}`,
+      subject: 'We received your flooring quote request',
+      html: htmlTemplate,
+    });
+  } catch (error) {
+    console.error('Error sending B2B quote email:', error);
+    throw new Error('Failed to send B2B quote request email');
   }
 };
 

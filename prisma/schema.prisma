@@ -195,6 +195,25 @@ model Appointment {
   AppointsType   AppointsType @default(installations)
 }
 
+model B2BQuote {
+  id              Int         @id @default(autoincrement())
+  fullName        String
+  phone           String
+  email           String
+  companyName     String
+  role            String?
+  quantity        String
+  productRequired Json[]      @default([])
+  projectStatus   String?
+  budgetRange     String?
+  additionalInfo  String?
+  tradeLicense    Json?
+  trnNumber       String
+  createdAt       DateTime?   @default(now())
+  updatedAt       DateTime?   @updatedAt
+  status          BlogStatus? @default(PUBLISHED)
+}
+
 model User {
   id           Int     @id @default(autoincrement())
   name         String
