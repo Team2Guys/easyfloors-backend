@@ -21,6 +21,7 @@ export class B2bQuotesResolver {
     return this.b2bQuotesService.findAll();
   }
 
+  @Public()
   @Query(() => B2bQuote, { name: 'b2bQuote' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.b2bQuotesService.findOne(id);
