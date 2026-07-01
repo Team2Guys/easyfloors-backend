@@ -17,6 +17,7 @@ import { SalesProductsModule } from './sales-products/sales-products.module';
 import { PrismaService } from './prisma/prisma.service';
 import { GeneralModule } from './general/general.module';
 import { GcpModule } from './gcp/gcp.module';
+import { B2bQuotesModule } from './b2b_quotes/b2b_quotes.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import {
   ThrottlerGuard,
@@ -63,6 +64,7 @@ import { GqlThrottlerGuard } from './general/GraphQLThrottlerGuard';
     SalesProductsModule,
     GeneralModule,
     GcpModule,
+    B2bQuotesModule,
   ],
   controllers: [AppController],
   providers: [

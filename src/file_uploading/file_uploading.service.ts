@@ -16,6 +16,10 @@ export class FileUploadingService {
             resolve(result);
           },
         );
+        // Catch read-stream errors (e.g. PayloadTooLargeError when a file
+        // exceeds the graphqlUploadExpress limit) so they reject the promise
+        // instead of crashing the process via an unhandled 'error' event.
+        stream.on('error', (error) => reject(error));
         stream.pipe(upload);
       });
       return { imageUrl: result.secure_url, public_id: result.public_id };

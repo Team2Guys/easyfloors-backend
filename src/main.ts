@@ -13,7 +13,7 @@ import {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 5 }));
+  app.use(graphqlUploadExpress({ maxFileSize: 52428800, maxFiles: 5 })); // 50 MB
   const isProd = process.env.NODE_ENV === 'production';
 
   app.use(
