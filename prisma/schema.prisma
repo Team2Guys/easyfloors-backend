@@ -214,6 +214,17 @@ model B2BQuote {
   status          BlogStatus? @default(PUBLISHED)
 }
 
+model RequestCallback {
+  id        Int         @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  whatsapp  String?
+  createdAt DateTime?   @default(now())
+  updatedAt DateTime?   @updatedAt
+  status    BlogStatus? @default(PUBLISHED)
+}
+
 model User {
   id           Int     @id @default(autoincrement())
   name         String
