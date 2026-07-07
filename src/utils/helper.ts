@@ -2,6 +2,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CreateAppointmentInput } from '../appointments/dto/create-appointment.input';
 import { CreateB2bQuoteInput } from '../b2b_quotes/dto/create-b2b-quote.input';
+import { CreateRequestCallbackInput } from '../request_callbacks/dto/create-request-callback.input';
 import nodemailer from 'nodemailer';
 import {
   contactUsEmailInput,
@@ -400,6 +401,68 @@ export const sendB2BQuoteEmail = async (quoteData: CreateB2bQuoteInput) => {
   } catch (error) {
     console.error('Error sending B2B quote email:', error);
     throw new Error('Failed to send B2B quote request email');
+  }
+};
+
+export const sendRequestCallbackEmail = async (
+  data: CreateRequestCallbackInput,
+) => {
+  const { name, email, phone, whatsapp } = data;
+
+  const row = (label: string, value: string) =>
+    value
+      ? `<tr>
+          <td style="padding:12px 6px; border-bottom:1px solid #e6e6e6; font-size:11px; letter-spacing:0.8px; text-transform:uppercase; color:#9a9a9a; font-weight:bold; font-family:Arial, sans-serif;">${label}</td>
+          <td style="padding:12px 6px; border-bottom:1px solid #e6e6e6; font-size:16px; color:#2b2b2b; font-family:Arial, sans-serif;">${value}</td>
+        </tr>`
+      : '';
+
+  const htmlTemplate = `<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin:0; padding:0; background-color:#ffffff; font-family:Arial, sans-serif;">
+      <div style="max-width:520px; margin:24px auto; background:#f4f4f4; border-radius:10px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.08);">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#feb907;">
+          <tr>
+            <td style="padding:15px 22px; font-size:13px; font-weight:bold; letter-spacing:1px; text-transform:uppercase; color:#3d2f00; font-family:Arial, sans-serif;">Callback Request</td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; background:#f4f4f4;">
+          <tr><td style="padding:10px 18px 18px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              ${row('Name', name)}
+              ${row('Email', email)}
+              ${row('Phone', phone)}
+              ${row('WhatsApp', whatsapp || '')}
+            </table>
+          </td></tr>
+        </table>
+      </div>
+    </body>
+  </html>`;
+
+  try {
+    // Internal notification to the team.
+    await transporter.sendMail({
+      from: `Callback Request @EF ${process.env.EMAIL_USER}`,
+      to: `${process.env.EMAIL_USER},${process.env.ORDER_MAIL1},${process.env.ORDER_MAIL2},${process.env.ORDER_MAIL3}`,
+      subject: `New Callback Request from ${name}`,
+      html: htmlTemplate,
+    });
+
+    // Acknowledgement to the customer.
+    await transporter.sendMail({
+      from: `EasyFloors ${process.env.EMAIL_USER}`,
+      to: `${email}`,
+      subject: 'We received your callback request',
+      html: htmlTemplate,
+    });
+  } catch (error) {
+    console.error('Error sending callback request email:', error);
+    throw new Error('Failed to send callback request email');
   }
 };
 

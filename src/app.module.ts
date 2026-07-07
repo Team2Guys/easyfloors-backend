@@ -18,6 +18,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { GeneralModule } from './general/general.module';
 import { GcpModule } from './gcp/gcp.module';
 import { B2bQuotesModule } from './b2b_quotes/b2b_quotes.module';
+import { RequestCallbacksModule } from './request_callbacks/request_callbacks.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import {
   ThrottlerGuard,
@@ -65,6 +66,7 @@ import { GqlThrottlerGuard } from './general/GraphQLThrottlerGuard';
     GeneralModule,
     GcpModule,
     B2bQuotesModule,
+    RequestCallbacksModule,
   ],
   controllers: [AppController],
   providers: [
