@@ -17,6 +17,7 @@ import { SalesProductsModule } from './sales-products/sales-products.module';
 import { PrismaService } from './prisma/prisma.service';
 import { GeneralModule } from './general/general.module';
 import { GcpModule } from './gcp/gcp.module';
+import { RequestCallbacksModule } from './request_callbacks/request_callbacks.module';
 import { B2bQuotesModule } from './b2b_quotes/b2b_quotes.module';
 import { RequestCallbacksModule } from './request_callbacks/request_callbacks.module';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -65,6 +66,7 @@ import { GqlThrottlerGuard } from './general/GraphQLThrottlerGuard';
     SalesProductsModule,
     GeneralModule,
     GcpModule,
+    RequestCallbacksModule,
     B2bQuotesModule,
     RequestCallbacksModule,
   ],
